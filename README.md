@@ -961,7 +961,7 @@ scheduling constraints.  As such, the `map` operation might slow down,
 accumulating up to 100 users on its output stream but requesting a new
 one once every 100ms on average.
 
-### reduce
+#### reduce
 
 The `reduce` method, much like its forebear on `Array.prototype`,
 accepts an aggregator function.  It also takes an optional `basis`, and
@@ -1114,7 +1114,7 @@ iteration `index` from the input array to the output stream and `all` has
 reassembled the array in its original order.  The strict order is not an
 indication that `map` yielded the values in that order.
 
-### buffer
+#### buffer
 
 The `buffer` method sends its input directly to its output, accumulating some
 number of values in memory.  This is useful for reducing latency delays when
