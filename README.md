@@ -840,7 +840,7 @@ starter.next() // {value: 1};
 starter.next() // {value: 'Go!', done: true};
 ```
 
-With generators, the `next` method also gains gains the ability to
+With generators, the `next` method also gains the ability to
 convey a value for the `yield` expression, making it both the sender and
 receiver of information.  If the generator throws an exception while
 trying to reach the next `yield`, the `next` method will throw that
@@ -907,8 +907,7 @@ and shared `maxInFlight` values for an operation.
 The `map` method consumes up to `maxInFlight` values from the input
 stream while processing those values.  It takes a callback that may
 return a promise for a corresponding value and produces a stream of
-those values.  Values are consumed at the rate at the same rate as the
-callback.
+those values.  Values are consumed at the same rate as the callback.
 
 In this example, we transform a stream of user identifiers into a stream
 of users, getting user information from the database, piplining up to
@@ -940,7 +939,7 @@ The fulfillment of the callback is ignored, but rejections propagate and
 halt the loop.
 
 This example starts as the previous.  We consume the stream of users one
-at a time with an artificial delay of 100 miliseconds between printing
+at a time with an artificial delay of 100 milliseconds between printing
 each user's name.  When the list is finished, we print an underline.
 
 ```javascript
@@ -1131,9 +1130,9 @@ returned by `get` do not need to be resolved in order.
 
 In this example, note that we call `get` once immediately, and then we
 call `get` again after the first promise is resolved.  This should
-ensure that the first and second message are logged in order.
+ensure that the first and second messages are logged in order.
 
-Note that we wait 100 miliseconds before putting anything on the queue.
+Note that we wait 100 milliseconds before putting anything on the queue.
 At that time, we put *a promise* for the first message on the queue, and
 resolve the second message immediately.  Thus, the second message is
 fulfilled first, before the consumer has even asked for it.
@@ -1195,8 +1194,9 @@ The `buffer` method sends its input directly to its output, accumulating some
 number of values in memory.  This is useful for reducing latency delays when
 consuming iterations from a remote iterator.
 
-In this example, there is a remote array.  We want to log every value from that
-remote array do not want to wait for all of them to accumulate in local memory.
+In this example, there is a remote array.  We want to log every value
+from that remote array and do not want to wait for all of them to
+accumulate in local memory.
 
 ```javascript
 Q(remoteArray)
@@ -1281,7 +1281,7 @@ additional jobs that may be performed concurrently, as represented by
 the `maxInFlight` argument of `forEach`, `map`, `reduce`, and `buffer`.
 As such, the resource itself is undefined, but the pool size is variable
 and `undefined` implies that the resource is infinite.  Since modeling
-an infinite promise queue in memory is not practicle, the `Semaphore`
+an infinite promise queue in memory is not practical, the `Semaphore`
 constructor returns a queue that resolves any `get` request immediately,
 and ignores all `put` requests.
 
@@ -1311,7 +1311,7 @@ iterator.next()
 In keeping with the Principle of Least-authority, the iterator only has
 the authority to consume values from the queue.
 
-Note that since queues are iteratoble, we can use `forEach`, `map`,
+Note that since queues are iteraable, we can use `forEach`, `map`,
 `reduce`, and `buffer` as described above on promises for iterables and,
 in fact, the latter three *return* promises for queue iterators.
 
@@ -1374,9 +1374,9 @@ correspondence between values taken from input and placed in output.
 
 The pipe consists of an `input` queue, an `output` queue, and an
 internal scheduling queue.  The user provides an iterable for the true
-input source, and the pipe promises not to counsume more than
-`maxInFlight` values from that source more than the values than values
-have been placed in the `output` bin.
+input source.  Once `maxInFlight` values have been drawn from the true
+input, the pipe ensures that additional values will only be requested
+after the same quantity of values are consumed from the true output.
 
 This is an implementation for a scheduling buffer, eliding very few
 details of the actual implementation.
@@ -1417,7 +1417,7 @@ all of the control flow abstractions afforded to us by JavaScript.  The
 `async` method decorates a generator function and turns it into a
 function that returns a promise for the eventual return value of the
 generator, but internally uses the `yield` to explicitly pause the
-current event and wait for that promise to resolve.  Whent that promise
+current event and wait for that promise to resolve.  When that promise
 resolves, the `yield` expression either takes on the fulfillment value
 or throws an exception right into the the generator function's control
 flow and stack.
@@ -1428,7 +1428,7 @@ handled.
 
 In this example, we have a an asynchronous generator function that
 consumes iterations from an iterator, waits for the iteration's value,
-waits for the iterations index, then calls the map function waiting for
+waits for the iteration's index, then calls the map function waiting for
 its result.  It then accumulates the sum of all the mapped results and
 returns the aggregate value, finally fulfilling the returned promise.
 
