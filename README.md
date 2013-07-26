@@ -1114,6 +1114,59 @@ iteration `index` from the input array to the output stream and `all` has
 reassembled the array in its original order.  The strict order is not an
 indication that `map` yielded the values in that order.
 
+### buffer
+
+The `buffer` method sends its input directly to its output, accumulating some
+number of values in memory.  This is useful for reducing latency delays when
+consuming iterations from a remote iterator.
+
+In this example, there is a remote array.  We want to log every value
+from that remote array and do not want to wait for all of them to
+accumulate in local memory.
+
+```javascript
+Q(remoteArray)
+.forEach(function (value) {
+    console.log(value);
+})
+.done();
+```
+
+We also do not want to reenact this scenario:
+
+```
+next()
+wait one round trip time (typically 60ms)
+log one value
+next()
+wait one round trip time
+log one value
+...
+```
+
+To achive this, we add a buffer.
+
+```javascript
+Q(remoteArray)
+.buffer(100)
+.forEach(function (value) {
+    console.log(value);
+})
+.done();
+```
+
+Thus, the replay would look more like:
+
+```
+next() 100 times
+wait one round trip time
+log one value
+next()
+log one value
+next()
+...
+```
+
 
 ### Infinite Promise Queue
 
@@ -1186,60 +1239,6 @@ Note that `get` and `put` are implicitly bound to the Queue.  This means
 that these functions can be vended to producers and consumers
 separately, allowing fine grain control over which actors have the
 capability to consume and produce.
-
-
-### buffer
-
-The `buffer` method sends its input directly to its output, accumulating some
-number of values in memory.  This is useful for reducing latency delays when
-consuming iterations from a remote iterator.
-
-In this example, there is a remote array.  We want to log every value
-from that remote array and do not want to wait for all of them to
-accumulate in local memory.
-
-```javascript
-Q(remoteArray)
-.forEach(function (value) {
-    console.log(value);
-})
-.done();
-```
-
-We also do not want to reenact this scenario:
-
-```
-next()
-wait one round trip time (typically 60ms)
-log one value
-next()
-wait one round trip time
-log one value
-...
-```
-
-To achive this, we add a buffer.
-
-```javascript
-Q(remoteArray)
-.buffer(100)
-.forEach(function (value) {
-    console.log(value);
-})
-.done();
-```
-
-Thus, the replay would look more like:
-
-```
-next() 100 times
-wait one round trip time
-log one value
-next()
-log one value
-next()
-...
-```
 
 
 ### Asynchronous Semaphores
